@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href ="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+   
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+   
+    <style>
+         body {
+         margin:auto;
+         background-color: #8b8b8b;
+         
+       
+        }
+        
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #fff6f6;
+}
+
+th { 
+    background-color: #0d0c0c;
+    color: whitesmoke;
+}
+
+ th, td {
+  padding: 4px;
+  text-align: left;
+  border-bottom: 1px solid black;
+}
+
+tr:hover {background-color: #ff8888;}
+</style>
+    
+</head>
+
+<body >
+    
+    <div class="container" style="align-self: auto;" >
+        <h1  class="text-bg-dark">  SHARPENER BAZAR</h1>
+        <h3 class="text-bg-success"> ADMIN PAGE</h3><hr>
+        <form style="background-color: bisque;" class ="form-control" >
+        <label for="amount" id="labels"> PRODUCT PRICE </label>
+            <input type="text" id="amounttext"  placeholder=" Please Enter MRP" class="input-control" required>
+            <label for="PRODUCTNAME" id="labels"> PRODUCT NAME </label>
+            <input type="text" id="producttext"  placeholder="Enter Product Name" class="input-control" required>
+            <label for ="description" id="desp"> CATEGORY  </label>
+          <select name="category" id="category1"  >
+            <option>FOOD</option>
+            <option>SKINCARE</option>
+            <option>ELECTRONICS</option>
+            <option>CLOTHING</option>
+         </select> 
+           <span></span> <button id="btn" class="btn btn-primary">POST</button>
+
+            
+        </form>
+        <hr>
+        <h5>FOOD PRODUCT</h5>
+        <table id="list">
+            <tr>
+              <th>Price</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Button</th>
+            </tr>
+            </table>
+         
+         <hr>
+        <h5>SKINCARE PRODUCT</h5>
+        <table id="list2">
+            <tr>
+              <th>Price</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Button</th>
+            </tr>
+            </table>
+        
+        <hr>
+       <h5> ELECTRONICS PRODUCT</h5>
+        <table id="list3">
+            <tr>
+              <th>Price</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Button</th>
+            </tr>
+            </table>
+         
+         <hr>
+         <h5> CLOTHING PRODUCT</h5> 
+         <table id="list">
+             <tr>
+               <th>Price</th>
+               <th>Product Name</th>
+               <th>Category</th>
+               <th>Button</th>
+             </tr>
+             
+            </table>
+         <hr>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script>
+    let button=document.getElementById("btn")
+    let price=document.getElementById("amounttext")
+    let productname=document.getElementById("producttext")
+    let category=document.getElementById("category1")
+
+   
+
+    button.addEventListener("click",function getdata(e){
+        e.preventDefault();
+        
+         let obj={price:`${price.value}`,product:`${productname.value}`,category:`${category.value}`}
+       
+         axios
+         .post('https://crudcrud.com/api/8e5feaace28a40059c65f3c167401235/product',obj)
+         .then((res)=>{
+                 onscreen(res.data)
+                  console.log(res.data)
+                })
+         .catch((err)=>{console.log(err)})
+       
+         price.value=""
+         productname.value=""
+         category.value=""
+    })
+
+    
+    window.addEventListener("DOMContentLoaded", () => {
+        axios
+        .get('https://crudcrud.com/api/8e5feaace28a40059c65f3c167401235/product')
+        .then((res)=>{
+            for(var i=0;i<res.data.length;i++){
+                onscreen(res.data[i])
+            }
+        })
+        .catch((Err)=>console.log(Err))
+        
+       
+    });
+
+
+    function onscreen(object)
+    {
+       
+        if(object.category==="FOOD"){
+        
+        let list=document.getElementById("list")
+
+        // const childhtml =`<ol id="${object._id}"> ${object.price}-->${object.product}--${object.category}
+        //       <button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button>
+        //        </ol>`
+
+ const childhtml=
+   `<tr id="${object._id}">
+    <td>${object.price}</td>
+    <td>${object.product}</td>
+    <td>${object.category}</td>
+    <td><button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button><td>
+    </tr>`
+
+    list.innerHTML=list.innerHTML + childhtml;
+            }
+
+         else if(object.category==="SKINCARE"){
+        
+        let list=document.getElementById("list2")
+
+        // const childhtml =`<ol id="${object._id}"> ${object.price}--${object.product}--${object.category}
+        //       <button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button>
+        //        </ol>`
+        const childhtml=
+   `<tr id="${object._id}">
+    <td>${object.price}</td>
+    <td>${object.product}</td>
+    <td>${object.category}</td>
+    <td><button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button><td>
+    </tr>`
+
+            list.innerHTML=list.innerHTML + childhtml;
+            }
+            else if(object.category==="ELECTRONICS"){
+        
+        let list=document.getElementById("list3")
+
+        // const childhtml =`<ol id="${object._id}"> ${object.price}--${object.product}--${object.category}
+        //       <button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button>
+        //        </ol>`
+        const childhtml=
+   `<tr id="${object._id}">
+    <td>${object.price}</td>
+    <td>${object.product}</td>
+    <td>${object.category}</td>
+    <td><button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button><td>
+    </tr>`
+
+            list.innerHTML=list.innerHTML + childhtml;
+            }
+            else if(object.category==="CLOTHING"){
+        
+        let list=document.getElementById("list4")
+
+        // const childhtml =`<ol id="${object._id}"> ${object.price}--${object.product}--${object.category}
+        //       <button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button>
+        //        </ol>`
+        const childhtml=
+   `<tr id="${object._id}">
+    <td>${object.price}</td>
+    <td>${object.product}</td>
+    <td>${object.category}</td>
+    <td><button class="btn btn-danger" onclick=deleteuser('${object._id}','${object.category}') >Delete</button><td>
+    </tr>`
+            list.innerHTML=list.innerHTML + childhtml;
+            }
+        }
+    
+    
+        function deleteuser(userid,category){
+          //   console.log(userid)
+          //   console.log(category)
+            
+        axios
+        .delete(`https://crudcrud.com/api/8e5feaace28a40059c65f3c167401235/product/${userid}`)
+         .then((res)=>{
+           removefromscreen(userid,category);
+       })
+       .catch(err=>console.log(err))
+       
+
+    }
+
+   function removefromscreen(userid,category){
+   
+     if(category==="FOOD"){
+    var row = document.getElementById(userid);
+    row.parentNode.removeChild(row);
+
+      }
+    
+   else if(category==="SKINCARE"){
+
+    var row = document.getElementById(userid);
+    row.parentNode.removeChild(row);
+
+       }
+
+
+    
+    else if(category==="ELECTRONICS"){
+        var row = document.getElementById(userid);
+        row.parentNode.removeChild(row);
+
+        }
+    
+    else if(category==="CLOTHING")
+    {
+        var row = document.getElementById(userid);
+        row.parentNode.removeChild(row);
+
+    }
+    
+   }
+
+
+
+  
+
+
+</script>
+</body>
+</html>
